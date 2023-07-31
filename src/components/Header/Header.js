@@ -1,29 +1,27 @@
 import React from 'react';
-import {AppBar, Button, IconButton, Box, Typography, Toolbar} from "@mui/material";
+import styles from './header.module.css';
+import { ReactComponent as MangoLogo } from "../../assets/header/mangoLogo.svg";
+import InputSearch from "../InputSearch/InputSearch";
 
 const Header = () => {
-    return <>
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-        </Box>
-    </>
-
-}
+    return (
+        <div className={styles.allBlock}>
+            <div className={styles.headerBlock}>
+                <div className={styles.logoBlock}>
+                    <MangoLogo />
+                    <div className={styles.logoText}>
+                        <h2 className={styles.h2}>MangoRead</h2>
+                        <p className={styles.p}>Читай мангу с нами</p>
+                    </div>
+                </div>
+                <InputSearch />
+                <div className={styles.buttons}>
+                    <button className={styles.login}>Войти</button>
+                    <button className={styles.signUp}>Регистрация</button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Header;
