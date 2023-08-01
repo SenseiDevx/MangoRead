@@ -3,7 +3,8 @@
   background: #F3F3F3;
   -webkit-box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.15);
           box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.15);
-  position: sticky;
+  position: fixed;
+  z-index: 100;
 }
 .allBlock .headerBlock {
   display: -webkit-box;
@@ -17,7 +18,8 @@
           align-items: center;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .allBlock .headerBlock .logoBlock {
   display: -webkit-box;

@@ -1,0 +1,62 @@
+.allBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding-left: 20px;
+  gap: 20px;
+  width: 840px;
+  margin-top: 130px;
+}
+.allBlock .cardBlock {
+  position: relative;
+  width: 190px;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 15px;
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.9);
+}
+.allBlock .cardBlock .img {
+  cursor: pointer;
+  width: 190px;
+  height: 220px;
+  border-radius: 15px;
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: ease-in-out 0.6s;
+  transition: ease-in-out 0.6s;
+  opacity: 0.6;
+}
+.allBlock .cardBlock .img:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+  border-radius: 15px;
+}
+.allBlock .cardBlock .cardText .h3 {
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  bottom: 62px;
+  left: 10px;
+}
+.allBlock .cardBlock .cardText .p {
+  left: 10px;
+  bottom: 11px;
+  position: absolute;
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

@@ -1,0 +1,68 @@
+.allBlock {
+  width: 400px;
+  height: 700px;
+  border-radius: 20px;
+  background: #FFF;
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  margin-top: 130px;
+}
+.allBlock .h3 {
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-left: 20px;
+}
+.allBlock .genreBlock {
+  padding-left: 10px;
+  overflow-y: scroll;
+  height: 550px;
+}
+.allBlock .genreBlock .genre {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.allBlock .genreBlock .genre .checkBox {
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #2FE09B;
+  background-color: #2FE09B;
+  border-radius: 8px;
+}
+.allBlock .genreBlock .genre .p {
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+.allBlock .buttons {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.allBlock .buttons .button {
+  border-radius: 8px;
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
