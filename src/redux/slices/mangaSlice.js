@@ -48,8 +48,8 @@ export const getMangaById = createAsyncThunk(
     async (id, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(`${link.BASE_URL}manga/${id}`);
+            console.log(data)
             return data;
-
         } catch (error) {
             console.error("Error", error.message);
             return rejectWithValue(error.message);

@@ -78,3 +78,24 @@
   line-height: 35px;
   width: 500px;
 }
+.allBlock .mangoBlock .sinopsis {
+  border-bottom: 2px solid #CECECE;
+  padding-bottom: 33px;
+  margin-bottom: 33px;
+}
+.allBlock .mangoBlock .sinopsis .h2 {
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.allBlock .mangoBlock .sinopsis .p {
+  color: #616161;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}

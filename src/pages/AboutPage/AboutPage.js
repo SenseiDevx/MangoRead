@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getMangaById, getMangas} from '../../redux/slices/mangaSlice';
 import {useNavigate, useParams} from "react-router-dom";
 import {Button} from "@mui/material";
+import ReviewList from "../../components/Review/ReviewList/ReviewList";
+import ModalForReview from "../../components/Review/ModalForReview/ModalForReview";
 
 const AboutPage = () => {
     const dispatch = useDispatch();
@@ -86,8 +88,9 @@ const AboutPage = () => {
                             </div>
                             <div className={styles.sinopsis}>
                                 <h2 className={styles.h2}>Синопсис</h2>
-                                <p>{sinopsis}</p>
+                                <p className={styles.p}>{sinopsis}</p>
                             </div>
+                            <ReviewList/>
                         </div>
                     ) : (
                         <div>Manga not found</div>
