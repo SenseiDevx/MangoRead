@@ -28,6 +28,9 @@ const Header = ({userId}) => {
             }
         }
     }, [dispatch, userId]);
+    //OmurbekKurmanbekov
+    //OmaSensei
+    //Omurbek1234567
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -68,7 +71,7 @@ const Header = ({userId}) => {
                     {user ? (
                         <>
                             <h3 className={styles.username}>{user?.user}</h3>
-                            <img className={styles.img} src={user?.image} alt={user?.user}/>
+                                <img className={styles.img} src={user?.image_file} alt={user?.user}/>
                             <button className={styles.logout} onClick={handleLogout}>
                                 Выйти
                             </button>

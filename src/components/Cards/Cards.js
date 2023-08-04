@@ -3,18 +3,31 @@ import {useDispatch, useSelector} from "react-redux";
 import {getMangas} from "../../redux/slices/mangaSlice";
 import styles from './cards.module.css'
 import {Link} from "react-router-dom";
+import {Pagination} from "@mui/material";
 
 const Cards = () => {
     const dispatch = useDispatch()
-    const {mangas} = useSelector((state) => state.mangoReducer)
+    const {mangas, itemsPerPage } = useSelector((state) => state.mangoReducer)
 
     useEffect(() => {
-        dispatch(getMangas())
-    }, [])
+        dispatch(getMangas({ offset: 1, limit: itemsPerPage }))
+    }, [dispatch, itemsPerPage])
 
     // Функция для обрезания текста и добавления двух точек, если он превышает 20 символов
     const truncateDescription = (text, maxLength) => {
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+    };
+
+    if (!Array.isArray(mangas)) {
+        return <div>No data available.</div>;
+    }
+
+    const handlePreviousPage = () => {
+        dispatch(getMangas({ offset: mangas.length - itemsPerPage, limit: itemsPerPage }));
+    };
+
+    const handleNextPage = () => {
+        dispatch(getMangas({ offset: mangas.length + 1, limit: itemsPerPage }));
     };
 
     return <>
@@ -30,6 +43,14 @@ const Cards = () => {
                     </div>
                 </Link>
             ))}
+            <div className={styles.paginationButtons}>
+                <button disabled={mangas.length >= itemsPerPage} onClick={handlePreviousPage}>
+                    Previous Page
+                </button>
+                <button disabled={mangas.length < itemsPerPage} onClick={handleNextPage}>
+                    Next Page
+                </button>
+            </div>
         </div>
     </>
 

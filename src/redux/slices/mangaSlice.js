@@ -32,16 +32,29 @@ apiClient.interceptors.response.use(
 
 export const getMangas = createAsyncThunk(
     "getMangas",
-    async (params, { rejectWithValue }) => {
+    async ({ offset, limit }, { rejectWithValue }) => {
         try {
-            const { data } = await apiClient.get("manga/");
-            return data;
+            const { data } = await apiClient.get("manga/", {
+                params: {
+                    offset,
+                    limit,
+                },
+            });
+
+            const mangasArray = data.results; // Получаем массив mangas из возвращенных данных
+
+            console.log("Mangas array:", mangasArray);
+
+            return mangasArray;
         } catch (error) {
             console.error("Error", error.message);
             return rejectWithValue(error.message);
         }
     }
 );
+
+
+
 
 export const getMangaById = createAsyncThunk(
     "getMangaById",
@@ -61,8 +74,10 @@ const initialState = {
     mangas: [],
     loading: true,
     offset: 1,
-    manga: null
+    manga: null,
+    itemsPerPage: 12
 };
+
 
 const mangaSlice = createSlice({
     name: "mangaSlice",
