@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMangas } from "../../redux/slices/mangaSlice";
 import styles from "./cards.module.css";
 import { Link } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import {CircularProgress, Skeleton} from "@mui/material";
 
 const Cards = () => {
     const dispatch = useDispatch();
@@ -33,8 +33,12 @@ const Cards = () => {
     return (
         <>
             {loading ? (
-                <div style={{marginTop: '200px'}}>
-                    <CircularProgress/>
+                <div style={{marginTop: "120px", display: "flex", flexWrap: "wrap", justifyContent: 'space-between'}}>
+                    {[...Array(12)].map((_, index) => (
+                        <div key={index} style={{margin: "10px"}}>
+                            <Skeleton variant="rectangular" width={190} height={220} sx={{borderRadius: '16px'}}/>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className={styles.allBlock}>
