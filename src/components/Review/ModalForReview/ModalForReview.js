@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./modalforreview.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addReview } from "../../../redux/slices/reviewSlice";
-import {fetchUserData} from "../../../redux/slices/authSlice";
+import { fetchUserData } from "../../../redux/slices/authSlice";
+import { addReview, getReviews } from "../../../redux/slices/reviewSlice";
+import {useParams} from "react-router-dom";
 
 const ModalForReview = ({ closeModal, userId }) => {
     const dispatch = useDispatch();
+    const {id} = useParams()
     const { user } = useSelector((state) => state.authReducer);
     const modalRef = useRef(null);
-    const [commentText, setCommentText] = useState("");
+    const [comment, setComment] = useState("");
 
     useEffect(() => {
         if (userId) {
@@ -18,19 +20,27 @@ const ModalForReview = ({ closeModal, userId }) => {
 
     const handleClose = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
-            // Click occurred outside the modal, so close it
             closeModal();
         }
     };
 
-    const mangaId = userId
-    const text = commentText
-    const token = localStorage.getItem('token')
+    const handleAddReview = () => {
+        const data = {
+            userId: userId,
+            id: id,
+            token: user.token,
+            post: {
+                id: id,
+                text: comment,
+            },
+        };
 
-    const handleAddComment = () => {
-        dispatch(addReview({ mangaId, text, token}));
-        setCommentText("");
-        closeModal();
+        dispatch(addReview(data)).then((resultAction) => {
+            if (addReview.fulfilled.match(resultAction)) {
+                dispatch(getReviews({ id: userId, page: 1 }));
+                closeModal();
+            }
+        });
     };
 
     return (
@@ -47,11 +57,11 @@ const ModalForReview = ({ closeModal, userId }) => {
                                 className={styles.input}
                                 type="text"
                                 placeholder="Добавьте комментарий"
-                                value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)}
                                 required
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)} // Capture user's input
                             />
-                            <button className={styles.button} onClick={handleAddComment} type="submit">
+                            <button className={styles.button} onClick={handleAddReview} type="submit">
                                 Добавить
                             </button>
                         </div>

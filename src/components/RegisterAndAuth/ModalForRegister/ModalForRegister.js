@@ -3,8 +3,8 @@ import styles from "./modalforregister.module.css";
 import ava from '../../../assets/other/nickname.svg'
 import {Button} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ModalForAuth from "../ModalForAuth/ModalForAuth";
 import axios from "axios";
+import defaultimage from '../../../assets/other/imagedef.jpg'
 
 const ModalForRegister = ({closeModalRegister}) => {
     const fileInputRef = useRef(null);
@@ -29,7 +29,6 @@ const ModalForRegister = ({closeModalRegister}) => {
 
     const handleClose = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
-            // Click occurred outside the modal, so close it
             closeModalRegister();
         }
     };
@@ -44,11 +43,9 @@ const ModalForRegister = ({closeModalRegister}) => {
 
         axios.post('http://68.183.214.2:8666/api/auth/signup/', formData)
             .then((response) => {
-                // Handle successful registration (e.g., show a success message)
                 console.log('Registration successful:', response.data);
             })
             .catch((error) => {
-                // Handle registration error (e.g., show an error message)
                 console.error('Registration error:', error);
             });
     };
@@ -72,7 +69,7 @@ const ModalForRegister = ({closeModalRegister}) => {
                                     {selectedImage ? (
                                         <img className={styles.img} src={URL.createObjectURL(selectedImage)} alt="Selected" />
                                     ) : (
-                                        <img className={styles.img} src={ava} alt="Avatar" />
+                                        <img className={styles.img} src={defaultimage} alt="Avatar" />
                                     )}
                                     <label htmlFor="photoInput">
                                         <Button color="secondary" onClick={handleAddPhoto}>

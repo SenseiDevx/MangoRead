@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {link} from "../link/link";
-import {loadTokenFromLocalStorage} from "./authSlice";
 
 const apiClient = axios.create({
     baseURL: link.BASE_URL,
@@ -47,27 +46,24 @@ export const getReviews = createAsyncThunk(
 
 export const addReview = createAsyncThunk(
     "addReview",
-    async function ({ mangaId, text }, { rejectWithValue }) {
+    async function ( review, { dispatch, rejectWithValue }) {
         try {
-            const data = { text };
-            const options = {
+            const {response} = await fetch(`${link.BASE_URL}manga/${review.id}/add-comment/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${loadTokenFromLocalStorage()?.access}`
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify(data),
-            };
-
-            const response = await fetch(`${link.BASE_URL}manga/${mangaId}/add-comment/`, options);
-
-            if (!response.ok) {
-                throw new Error("Ошибка при добавлении комментария");
+                body: JSON.stringify(review.post)
+            })
+            if (response.status === 201) {
+                await dispatch(getReviews({id: review.userId, page: 1}))
+                return "Успех"
+            } else {
+                throw Error(`что-то пошло не так: ${response.status}`)
             }
-
-            return response.json();
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.message)
         }
     }
 );
@@ -77,7 +73,8 @@ export const addReview = createAsyncThunk(
 const initialState = {
     review: [],
     loading: true,
-    offset: 1
+    offset: 1,
+    text: ''
 }
 
 const reviewSlice = createSlice({

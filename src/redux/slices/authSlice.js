@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, isFulfilled} from '@reduxjs/toolkit';
 import {link} from "../link/link";
 import axios from "axios";
 
@@ -8,10 +8,12 @@ const localStorageKey = 'token';
 export const loadTokenFromLocalStorage = () => {
     try {
         const tokenData = localStorage.getItem(localStorageKey);
-        if (tokenData) {
-            return JSON.parse(tokenData);
-        }
-        return null;
+        console.log("token data", tokenData)
+        // if (tokenData) {
+        //     return JSON.parse(tokenData);
+        // }
+
+        return tokenData;
     } catch (error) {
         return null;
     }
@@ -34,6 +36,9 @@ export const loginUser = createAsyncThunk(
             };
 
             const response = await fetch(`${link.AUTH_BASE_URL}signin/`, options);
+            if(response.ok) {
+                return response.json()
+            }
 
             if (!response.ok) {
                 throw new Error('Пароль или логин не совпадает');
@@ -91,7 +96,7 @@ const authSlice = createSlice({
                 state.loading = false
                 state.user = action.payload
                 state.token = action.payload
-                localStorage.setItem(localStorageKey, JSON.stringify(action.payload))
+                localStorage.setItem('token', action.payload.access)
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false
@@ -111,7 +116,7 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 console.log('Ошибка при получении данных пользователя:', action.payload);
-            });
+            })
     }
 })
 export const {logoutUser} = authSlice.actions;
