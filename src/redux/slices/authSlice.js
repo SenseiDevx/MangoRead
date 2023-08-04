@@ -1,32 +1,13 @@
-import {createAsyncThunk, createSlice, isFulfilled} from '@reduxjs/toolkit';
+// authSlice.js
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 import {link} from "../link/link";
-import axios from "axios";
-
-const localStorageKey = 'token';
-
-// Функция для загрузки токенов из localStorage (если они есть)
-export const loadTokenFromLocalStorage = () => {
-    try {
-        const tokenData = localStorage.getItem(localStorageKey);
-        console.log("token data", tokenData)
-        // if (tokenData) {
-        //     return JSON.parse(tokenData);
-        // }
-
-        return tokenData;
-    } catch (error) {
-        return null;
-    }
-};
-
-// При инициализации, загружаем токены из localStorage
-const initialTokenState = loadTokenFromLocalStorage();
 
 export const loginUser = createAsyncThunk(
     'auth/login',
-    async ({username, password}, {rejectWithValue}) => {
+    async ({ username, password }, { rejectWithValue }) => {
         try {
-            const data = {username, password};
+            const data = { username, password };
             const options = {
                 method: 'POST',
                 headers: {
@@ -36,8 +17,8 @@ export const loginUser = createAsyncThunk(
             };
 
             const response = await fetch(`${link.AUTH_BASE_URL}signin/`, options);
-            if(response.ok) {
-                return response.json()
+            if (response.ok) {
+                return response.json();
             }
 
             if (!response.ok) {
@@ -48,14 +29,14 @@ export const loginUser = createAsyncThunk(
         } catch (error) {
             return rejectWithValue(error.message);
         }
-    });
-
+    }
+);
 
 export const fetchUserData = createAsyncThunk(
     'auth/fetchUserData',
     async (id, { rejectWithValue }) => {
         try {
-            console.log(id)
+            console.log(id);
             const { data } = await axios.get(`http://68.183.214.2:8666/api/auth/profile/${id}/`);
             return data;
         } catch (error) {
@@ -65,44 +46,42 @@ export const fetchUserData = createAsyncThunk(
     }
 );
 
-
-
-
 const initialState = {
     loading: false,
     error: null,
-    user: initialTokenState,
-    token: initialTokenState,
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
+    token: localStorage.getItem('token') || '',
 };
-
 
 const authSlice = createSlice({
     name: 'authSlice',
     initialState: initialState,
     reducers: {
         logoutUser: (state) => {
-            state.token = null;
-            state.user = null;
-            localStorage.removeItem(localStorageKey);
+            state.token = '';
+            state.user = '';
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
-                state.loading = true
-                state.error = null
+                state.loading = true;
+                state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.loading = false
-                state.user = action.payload
-                state.token = action.payload
-                localStorage.setItem('token', action.payload.access)
+                state.loading = false;
+                state.user = action.payload;
+                state.token = action.payload.access;
+                localStorage.setItem('user', JSON.stringify(action.payload));
+                localStorage.setItem('token', action.payload.access);
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.payload
-                localStorage.setItem(localStorageKey, JSON.stringify(action.payload))
-                console.log('Пароль или логин не совпадает')
+                state.loading = false;
+                state.error = action.payload;
+                localStorage.setItem('token', JSON.stringify(action.payload));
+                console.log('Пароль или логин не совпадает');
             })
             .addCase(fetchUserData.pending, (state) => {
                 state.loading = true;
@@ -111,14 +90,16 @@ const authSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
+                localStorage.setItem('user', JSON.stringify(action.payload));
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 console.log('Ошибка при получении данных пользователя:', action.payload);
-            })
-    }
-})
-export const {logoutUser} = authSlice.actions;
+            });
+    },
+});
 
-export default authSlice.reducer
+export const { logoutUser } = authSlice.actions;
+
+export default authSlice.reducer;

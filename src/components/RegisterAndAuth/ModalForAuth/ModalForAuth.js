@@ -11,17 +11,16 @@ const ModalForAuth = ({ closeModalAuth }) => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const { token } = useSelector((state) => state.authReducer);
-    const [isModalOpen, setIsModalOpen] = useState(true); // New state for modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
     useEffect(() => {
         if (token) {
-            console.log('Пользователь уже вошел в систему!'); // Пример действия при наличии токена
+            console.log('Пользователь уже вошел в систему!')
         }
     }, [token]);
 
     const handleClose = (e) => {
         if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target)) {
-            // Click occurred outside the modal, so close it
             closeModalAuth();
         }
     };

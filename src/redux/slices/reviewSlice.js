@@ -74,13 +74,18 @@ const initialState = {
     review: [],
     loading: true,
     offset: 1,
-    text: ''
+    text: '',
+    showModal: false
 }
 
 const reviewSlice = createSlice({
     name: "reviewSlice",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        setShowModal: (state, action) => {
+            state.showModal = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getReviews.pending, (state) => {
@@ -99,7 +104,8 @@ const reviewSlice = createSlice({
                 state.loading = true
             })
             .addCase(addReview.fulfilled, (state, action) => {
-                state.review.push(action.payload);
+                state.review = [...state.review, action.payload];
+                state.showModal = false
             })
             .addCase(addReview.rejected, (state, action) => {
                 state.loading = false
@@ -108,5 +114,5 @@ const reviewSlice = createSlice({
             })
     }
 })
-
+export const {setShowModal} = reviewSlice.actions
 export default reviewSlice.reducer

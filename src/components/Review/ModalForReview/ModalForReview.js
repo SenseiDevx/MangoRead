@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./modalforreview.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../../redux/slices/authSlice";
-import { addReview, getReviews } from "../../../redux/slices/reviewSlice";
+import {addReview, getReviews, setShowModal} from "../../../redux/slices/reviewSlice";
 import {useParams} from "react-router-dom";
 
 const ModalForReview = ({ closeModal, userId }) => {
@@ -21,24 +21,37 @@ const ModalForReview = ({ closeModal, userId }) => {
     const handleClose = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
             closeModal();
+            dispatch(setShowModal(false));
         }
     };
 
-    const handleAddReview = () => {
+    const handleAddReview = (e) => {
+        e.preventDefault()
+
+        const token = localStorage.getItem('token');
+        console.log('Token', token)
+        if (!token) {
+            // Если токен отсутствует, выведем сообщение об ошибке
+            console.error('Ошибка: Токен авторизации отсутствует');
+            return;
+        }
+
         const data = {
             userId: userId,
             id: id,
-            token: user.token,
+            token: user?.access,
             post: {
                 id: id,
                 text: comment,
             },
         };
+        console.log("users", user)
 
         dispatch(addReview(data)).then((resultAction) => {
             if (addReview.fulfilled.match(resultAction)) {
                 dispatch(getReviews({ id: userId, page: 1 }));
-                closeModal();
+                setComment(""); // Очищаем поле ввода после успешного добавления
+                dispatch(setShowModal(false))
             }
         });
     };

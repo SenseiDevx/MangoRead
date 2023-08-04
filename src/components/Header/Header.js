@@ -7,6 +7,7 @@ import ModalForRegister from "../RegisterAndAuth/ModalForRegister/ModalForRegist
 import ModalForAuth from "../RegisterAndAuth/ModalForAuth/ModalForAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserData, logoutUser} from "../../redux/slices/authSlice";
+import jwtDecode from "jwt-decode";
 
 const Header = ({userId}) => {
     const dispatch = useDispatch()
@@ -15,8 +16,16 @@ const Header = ({userId}) => {
     const {user} = useSelector(state => state.authReducer);
 
     useEffect(() => {
-        if (userId) {
-            dispatch(fetchUserData(userId));
+        const token = localStorage.getItem('token');
+        if (userId && token) {
+            const decodedToken = jwtDecode(token);
+            const tokenExpirationDate = new Date(decodedToken.exp * 1000);
+
+            if (new Date() > tokenExpirationDate) {
+                handleLogout();
+            } else {
+                dispatch(fetchUserData(userId));
+            }
         }
     }, [dispatch, userId]);
 
