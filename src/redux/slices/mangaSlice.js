@@ -72,7 +72,7 @@ export const getMangaById = createAsyncThunk(
 
 const initialState = {
     mangas: [],
-    loading: true,
+    loading: false,
     offset: 1,
     manga: null,
     itemsPerPage: 12

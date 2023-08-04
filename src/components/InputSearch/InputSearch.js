@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './inputsearch.module.css';
 import search from '../../assets/header/search.svg';
@@ -8,7 +8,7 @@ import {clearSearch, fetchMangaData, setDropdownVisible, setSearchText} from "..
 const InputSearch = () => {
     const dispatch = useDispatch();
     const { searchText, filteredData, isDropdownVisible, status, error } = useSelector((state) => state.filterReducer);
-    const [isInputFocused, setIsInputFocused] = useState(false); // Add state for input focus
+    const [isInputFocused] = useState(false);
 
     const handleInputFocus = () => {
         dispatch(setDropdownVisible(true));
