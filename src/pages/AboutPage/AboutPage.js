@@ -7,7 +7,7 @@ import {Button} from "@mui/material";
 import ReviewList from "../../components/Review/ReviewList/ReviewList";
 import ModalForReview from "../../components/Review/ModalForReview/ModalForReview";
 
-const AboutPage = () => {
+const AboutPage = ({userId}) => {
     const dispatch = useDispatch();
     const {id} = useParams();
     const {manga, loading} = useSelector((state) => state.mangoReducer);
@@ -90,7 +90,7 @@ const AboutPage = () => {
                                 <h2 className={styles.h2}>Синопсис</h2>
                                 <p className={styles.p}>{sinopsis}</p>
                             </div>
-                            <ReviewList/>
+                            <ReviewList userId={userId}/>
                         </div>
                     ) : (
                         <div>Manga not found</div>

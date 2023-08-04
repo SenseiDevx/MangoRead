@@ -1,0 +1,149 @@
+.modalWindow {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.modalWindow .modalRating {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  background: #FFFFFF;
+  -webkit-box-shadow: 5px 1px 40px rgba(0, 0, 0, 0.1);
+          box-shadow: 5px 1px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 37px;
+}
+.modalWindow .modalRating .allBlock .authTexts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-bottom: 2px solid #878787;
+  gap: 32px;
+}
+.modalWindow .modalRating .allBlock .authTexts .authButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 33px;
+}
+.modalWindow .modalRating .allBlock .authTexts .authButtons .button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+.modalWindow .modalRating .allBlock .authTexts .authButtons .button1 {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+.modalWindow .modalRating .allBlock .authTexts .authButtons .button1::after {
+  content: "";
+  display: block;
+  border-bottom: 6px solid #AD02E0;
+  margin-bottom: -3px;
+  border-radius: 6px;
+}
+.modalWindow .modalRating .allBlock .form .inputFile {
+  padding-top: 38px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.modalWindow .modalRating .allBlock .form .inputFile .img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.modalWindow .modalRating .allBlock .form .inputForm {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 25px;
+}
+.modalWindow .modalRating .allBlock .form .inputForm .input {
+  border-radius: 8px;
+  border: 1px solid #000;
+  width: 500px;
+  height: 52px;
+  outline: none;
+  color: #878787;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  padding: 10px;
+}
+.modalWindow .modalRating .allBlock .form .inputForm .button {
+  border-radius: 8px;
+  background: #AD02E0;
+  width: 500px;
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  padding: 15px 95px;
+  border: none;
+  outline: none;
+}

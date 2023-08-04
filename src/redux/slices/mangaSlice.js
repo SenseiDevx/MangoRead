@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { link } from "../link/link";
+import { link} from "../link/link";
 
 const apiClient = axios.create({
     baseURL: link.BASE_URL,

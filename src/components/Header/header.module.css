@@ -56,6 +56,22 @@
   display: flex;
   gap: 15px;
 }
+.allBlock .headerBlock .buttons .username {
+  color: #000;
+  text-align: right;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+.allBlock .headerBlock .buttons .img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .allBlock .headerBlock .buttons .login {
   outline: none;
   border-radius: 8px;

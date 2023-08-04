@@ -13,7 +13,7 @@
 }
 .modalWindow .modalRating {
   position: fixed;
-  top: 50%;
+  top: -100%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
@@ -38,6 +38,20 @@
       -ms-flex-direction: column;
           flex-direction: column;
   padding: 37px 60px 60px 60px;
+  -webkit-animation: slideDown 0.6s ease-in-out;
+          animation: slideDown 0.6s ease-in-out;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+@-webkit-keyframes slideDown {
+  to {
+    top: 50%;
+  }
+}
+@keyframes slideDown {
+  to {
+    top: 50%;
+  }
 }
 .modalWindow .modalRating .reviewBlock {
   display: -webkit-box;
@@ -54,6 +68,13 @@
   display: flex;
   gap: 52px;
   padding-bottom: 53px;
+}
+.modalWindow .modalRating .reviewBlock .reviewTopBlock .img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .modalWindow .modalRating .reviewBlock .reviewTopBlock .h3 {
   color: #000;
