@@ -33,27 +33,15 @@ apiClient.interceptors.response.use(
 
 export const getMangas = createAsyncThunk(
     "getMangas",
-    async ({ offset, limit }, { rejectWithValue }) => {
+    async () => {
         try {
-            const { data } = await apiClient.get("manga/", {
-                params: {
-                    offset,
-                    limit,
-                },
-            });
-
-            const mangasArray = data.results; // Получаем массив mangas из возвращенных данных
-
-            console.log("Mangas array:", mangasArray);
-
-            return mangasArray;
+            const {data} = await axios.get(`${link.BASE_URL}manga/`)
+            return data
         } catch (error) {
-            console.error("Error", error.message);
-            return rejectWithValue(error.message);
+            console.error("Error", error)
         }
     }
 );
-
 
 
 export const getMangaById = createAsyncThunk(

@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import styles from './genrecatalog.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {getGenres, updateSelectedGenres} from "../../redux/slices/genreSlice";
+import {getGenres, getTypes, updateSelectedGenres} from "../../redux/slices/genreSlice";
 import {Button, Checkbox} from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import axios from "axios";
+import {getMangas} from "../../redux/slices/mangaSlice";
 
 const GenreCatalog = () => {
     const dispatch = useDispatch();
-    const {genres, selectedGenres} = useSelector((state) => state.genreReducer);
+    const {genres, selectedGenres, types} = useSelector((state) => state.genreReducer);
     const [showParentGenreBlock, setShowParentGenreBlock] = useState(true);
-    const [mangaInfo, setMangaInfo] = useState(null);
+
+    const uniqueTypes = new Set(types.map((type) => type.type));
+
 
     const handleBackClick = () => {
         setShowParentGenreBlock((prevShowParentGenreBlock) => !prevShowParentGenreBlock);
@@ -18,7 +21,10 @@ const GenreCatalog = () => {
 
     useEffect(() => {
         dispatch(getGenres());
-    }, []);
+        dispatch(getTypes())
+    }, [dispatch]);
+
+
 
     // Обработчик для обновления выбранных жанров
     const handleGenreChange = (genreId) => {
@@ -33,13 +39,9 @@ const GenreCatalog = () => {
         }
     };
 
-    // Обработчик для применения фильтрации манг по выбранным жанрам
+
     const handleApplyFilter = () => {
-
     };
-
-
-
 
 
     return <>
@@ -52,11 +54,12 @@ const GenreCatalog = () => {
                 <div className={styles.typeBlock}>
                     <h3 className={styles.h3}>Тип</h3>
                     <div className={styles.genre}>
-                        {genres && genres?.map((type) => (
-                            <div className={styles.genre} key={type?.id}>
+                        {Array.from(uniqueTypes).map((uniqueType) => (
+                            <div key={uniqueType}>
                                 <Checkbox
                                     color="green"
                                 />
+                                <p>{uniqueType}</p>
                             </div>
                         ))}
                     </div>
