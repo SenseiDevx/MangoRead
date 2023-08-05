@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {link} from "../link/link";
-
+import jwt_decode from 'jwt-decode';
 
 // Создаем экземпляр Axios с базовым URL
 const instance = axios.create({
@@ -45,21 +45,26 @@ export const fetchUserData = createAsyncThunk(
     'auth/fetchUserData',
     async (id, { rejectWithValue }) => {
         try {
-            const response = await instance.get(`/profile/${id}/`);
-            console.log('response', response)
-            return response.data;
+            const decodedToken = jwt_decode(localStorage.getItem('token'));
+            // Decode the token to get user data
+            console.log('decodedToken',decodedToken)
+            const response = await instance.get(`/profile/${decodedToken.user_id}/`);
+            console.log("sda", response)
+            return response;
         } catch (error) {
             console.error('Ошибка при выполнении запроса fetchUserData:', error);
             return rejectWithValue('Ошибка при получении данных пользователя');
         }
     }
-);
+)
 
 const initialState = {
     loading: false,
     error: null,
-    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
+    userId: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
     token: localStorage.getItem('token') || '',
+    image: '',
+    user: []
 };
 
 const authSlice = createSlice({
@@ -69,6 +74,7 @@ const authSlice = createSlice({
         logoutUser: (state) => {
             state.token = '';
             state.user = '';
+            state.userId = ''
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         },
@@ -81,15 +87,16 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload;
+                state.userId = action.payload;
                 state.token = action.payload.access;
                 localStorage.setItem('user', JSON.stringify(action.payload));
                 localStorage.setItem('token', action.payload.access);
+                window.location.reload()
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                localStorage.setItem('token', JSON.stringify(action.payload));
+                // localStorage.setItem('token', JSON.stringify(action.payload));
                 console.log('Пароль или логин не совпадает');
             })
             .addCase(fetchUserData.pending, (state) => {
@@ -99,7 +106,7 @@ const authSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                localStorage.setItem('user', JSON.stringify(action.payload));
+                // localStorage.setItem('user', JSON.stringify(action.payload));
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
@@ -112,3 +119,4 @@ const authSlice = createSlice({
 export const { logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
+

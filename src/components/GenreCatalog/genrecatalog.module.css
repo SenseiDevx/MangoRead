@@ -42,6 +42,11 @@
   line-height: normal;
   padding-left: 20px;
 }
+.allBlock .typeBlock {
+  padding-left: 10px;
+  overflow-y: scroll;
+  height: 550px;
+}
 .allBlock .genreBlock {
   padding-left: 10px;
   overflow-y: scroll;

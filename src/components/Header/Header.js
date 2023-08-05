@@ -1,38 +1,37 @@
 import React, {useEffect, useState} from 'react';
 import styles from './header.module.css';
-import { ReactComponent as MangoLogo } from "../../assets/header/mangoLogo.svg";
+import {ReactComponent as MangoLogo} from "../../assets/header/mangoLogo.svg";
 import InputSearch from "../InputSearch/InputSearch";
 import {Link, useLocation} from "react-router-dom";
 import ModalForRegister from "../RegisterAndAuth/ModalForRegister/ModalForRegister";
 import ModalForAuth from "../RegisterAndAuth/ModalForAuth/ModalForAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserData, logoutUser} from "../../redux/slices/authSlice";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import jwtDecode from "jwt-decode";
 
-const Header = ({userId}) => {
+
+const Header = () => {
+    // localStorage.removeItem('token')
     const location = useLocation()
     const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loginModal, setIsLoginModal] = useState(false);
-    const {user} = useSelector(state => state.authReducer);
+    const [showButton, setShowButton] = useState(false);
+    const {user, userId} = useSelector(state => state.authReducer);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (userId && token) {
+        if (token) {
             const decodedToken = jwtDecode(token);
             const tokenExpirationDate = new Date(decodedToken.exp * 1000);
-
+            dispatch(fetchUserData())
             if (new Date() > tokenExpirationDate) {
                 handleLogout();
-            } else {
-                dispatch(fetchUserData(userId));
             }
         }
     }, [location]);
 
-    //OmurbekKurmanbekov
-    //OmaSensei
-    //Omurbek1234567
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -55,29 +54,43 @@ const Header = ({userId}) => {
     const closeModalAuth = () => {
         setIsLoginModal(false);
     };
-    console.log("image", user.image_file)
+
+    const toggleButton = () => {
+        setShowButton(!showButton);
+    };
+
+
     return (
         <div className={styles.allBlock}>
             <div className={styles.headerBlock}>
                 <div className={styles.logoBlock}>
                     <Link to="/">
-                        <MangoLogo />
+                        <MangoLogo/>
                     </Link>
                     <div className={styles.logoText}>
                         <h2 className={styles.h2}>MangoRead</h2>
                         <p className={styles.p}>Читай мангу с нами</p>
                     </div>
                 </div>
-                <InputSearch />
+                <InputSearch/>
                 <div className={styles.buttons}>
-                    {user ? (
-                        <>
-                            <h3 className={styles.username}>{user?.user}</h3>
-                                <img className={styles.img} src={user?.image_file} alt={user?.user}/>
-                            <button className={styles.logout} onClick={handleLogout}>
-                                Выйти
-                            </button>
-                        </>
+                    {user.image_file || userId ? (
+                        <div className={styles.profileBlock}>
+                            <h3 className={styles.username}>{userId?.user}</h3>
+                            <div className={styles.imgBlock}>
+                                <img
+                                    className={styles.img}
+                                    src={user?.image_file}
+                                    alt={user?.user}
+                                />
+                                <ArrowDropDownIcon sx={{cursor: "pointer"}} onClick={toggleButton}/>
+                                {showButton && (
+                                    <button className={styles.logout} onClick={handleLogout}>
+                                        Выйти
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <button className={styles.login} onClick={openModalAuth}>
@@ -90,8 +103,8 @@ const Header = ({userId}) => {
                     )}
                 </div>
             </div>
-            {isModalOpen && <ModalForRegister closeModalRegister={closeModalRegister} />}
-            {loginModal && <ModalForAuth closeModalAuth={closeModalAuth} />}
+            {isModalOpen && <ModalForRegister closeModalRegister={closeModalRegister}/>}
+            {loginModal && <ModalForAuth closeModalAuth={closeModalAuth}/>}
         </div>
     );
 };

@@ -6,13 +6,13 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import {useSelector} from "react-redux";
 
 function App() {
-    const {userId} = useSelector((state) => state.authReducer)
+    const {user} = useSelector((state) => state.authReducer)
     return (
         <div className="App">
-            <Header userId={userId}/>
+            <Header userId={user}/>
             <Routes>
                 <Route index element={<MainPage/>}/>
-                <Route path="about/:id" element={<AboutPage userId={userId}/>}/>
+                <Route path="about/:id" element={<AboutPage userId={user}/>}/>
             </Routes>
             <Footer/>
         </div>

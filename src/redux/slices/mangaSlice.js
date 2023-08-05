@@ -56,7 +56,6 @@ export const getMangas = createAsyncThunk(
 
 
 
-
 export const getMangaById = createAsyncThunk(
     "getMangaById",
     async (id, { rejectWithValue }) => {
@@ -77,8 +76,7 @@ const initialState = {
     offset: 1,
     manga: null,
     itemsPerPage: 12,
-    mangaList: [],
-    selectedGenres: []
+    mangaList: []
 };
 
 

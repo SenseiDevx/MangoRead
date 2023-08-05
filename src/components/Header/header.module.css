@@ -56,7 +56,17 @@
   display: flex;
   gap: 15px;
 }
-.allBlock .headerBlock .buttons .username {
+.allBlock .headerBlock .buttons .profileBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 25px;
+  position: relative;
+}
+.allBlock .headerBlock .buttons .profileBlock .username {
   color: #000;
   text-align: right;
   font-family: "Montserrat", sans-serif;
@@ -65,12 +75,35 @@
   font-weight: 400;
   line-height: 35px;
 }
-.allBlock .headerBlock .buttons .img {
+.allBlock .headerBlock .buttons .profileBlock .imgBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 15px;
+}
+.allBlock .headerBlock .buttons .profileBlock .imgBlock .img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.allBlock .headerBlock .buttons .profileBlock .imgBlock .logout {
+  position: absolute;
+  top: 60px;
+  right: -35px;
+  border: 1px solid #740994;
+  padding: 8px 18px;
+  border-radius: 15px;
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
 }
 .allBlock .headerBlock .buttons .login {
   outline: none;

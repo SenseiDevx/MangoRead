@@ -4,11 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {getGenres, updateSelectedGenres} from "../../redux/slices/genreSlice";
 import {Button, Checkbox} from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import axios from "axios";
 
 const GenreCatalog = () => {
     const dispatch = useDispatch();
     const {genres, selectedGenres} = useSelector((state) => state.genreReducer);
     const [showParentGenreBlock, setShowParentGenreBlock] = useState(true);
+    const [mangaInfo, setMangaInfo] = useState(null);
 
     const handleBackClick = () => {
         setShowParentGenreBlock((prevShowParentGenreBlock) => !prevShowParentGenreBlock);
@@ -36,6 +38,10 @@ const GenreCatalog = () => {
 
     };
 
+
+
+
+
     return <>
         <div className={styles.allBlock}>
             <div className={styles.back} onClick={handleBackClick}>
@@ -44,7 +50,16 @@ const GenreCatalog = () => {
             </div>
             {showParentGenreBlock ? (
                 <div className={styles.typeBlock}>
-                    <h1>type block</h1>
+                    <h3 className={styles.h3}>Тип</h3>
+                    <div className={styles.genre}>
+                        {genres && genres?.map((type) => (
+                            <div className={styles.genre} key={type?.id}>
+                                <Checkbox
+                                    color="green"
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ) : (
                 <div className={styles.parentGenreBlock}>

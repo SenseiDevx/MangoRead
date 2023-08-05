@@ -5,10 +5,10 @@ import { fetchUserData } from "../../../redux/slices/authSlice";
 import {addReview, getReviews, setShowModal} from "../../../redux/slices/reviewSlice";
 import {useParams} from "react-router-dom";
 
-const ModalForReview = ({ closeModal, userId }) => {
+const ModalForReview = ({ closeModal }) => {
     const dispatch = useDispatch();
     const {id} = useParams()
-    const { user } = useSelector((state) => state.authReducer);
+    const { user, userId } = useSelector((state) => state.authReducer);
     const modalRef = useRef(null);
     const [comment, setComment] = useState("");
 
@@ -16,7 +16,7 @@ const ModalForReview = ({ closeModal, userId }) => {
         if (userId) {
             dispatch(fetchUserData(userId));
         }
-    }, [dispatch, userId]);
+    }, [dispatch]);
 
     const handleClose = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -60,7 +60,7 @@ const ModalForReview = ({ closeModal, userId }) => {
                     <div className={styles.reviewBlock}>
                         <div className={styles.reviewTopBlock}>
                             <img className={styles.img} src={user?.image_file} alt={user?.user} />
-                            <h3 className={styles.h3}>{user?.user}</h3>
+                            <h3 className={styles.h3}>{userId?.user}</h3>
                         </div>
                         <div className={styles.reviewBottomBlock}>
                             <input
