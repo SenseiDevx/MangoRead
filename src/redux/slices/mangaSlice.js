@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { link} from "../link/link";
+import {updateSelectedGenres} from "./genreSlice";
 
 const apiClient = axios.create({
     baseURL: link.BASE_URL,
@@ -75,14 +76,20 @@ const initialState = {
     loading: false,
     offset: 1,
     manga: null,
-    itemsPerPage: 12
+    itemsPerPage: 12,
+    mangaList: [],
+    selectedGenres: []
 };
 
 
 const mangaSlice = createSlice({
     name: "mangaSlice",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        updateMangaList: (state, action) => {
+            state.mangaList = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getMangas.pending, (state) => {
@@ -91,6 +98,7 @@ const mangaSlice = createSlice({
             .addCase(getMangas.fulfilled, (state, action) => {
                 state.loading = false;
                 state.mangas = action.payload;
+                state.mangaList = action.payload;
             })
             .addCase(getMangas.rejected, (state, action) => {
                 state.loading = false;
@@ -108,6 +116,19 @@ const mangaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 alert("Произошла ошибка" + action.error.message);
+            })
+            .addCase(updateSelectedGenres, (state, action) => {
+                // Обновляем список манг при изменении выбранных жанров
+                const selectedGenres = action.payload;
+                if (selectedGenres.length === 0) {
+                    // Если нет выбранных жанров, отображаем все манги
+                    state.mangas = state.mangaList;
+                } else {
+                    // Иначе фильтруем манги по выбранным жанрам
+                    state.mangas = state.mangaList.filter((manga) => {
+                        return manga.genre.some((genreId) => selectedGenres.includes(genreId));
+                    });
+                }
             });
     },
 });

@@ -1,44 +1,53 @@
-// authSlice.js
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {link} from "../link/link";
 
+
+// Создаем экземпляр Axios с базовым URL
+const instance = axios.create({
+    baseURL: link.AUTH_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// Создаем Axios Interceptor для обработки ошибок
+instance.interceptors.response.use(
+    (response) => response.data,
+    (error) => {
+        if (error.response) {
+            if (error.response.status === 401) {
+                // Обработка ошибки аутентификации (неверный пароль или логин)
+                return Promise.reject(new Error('Пароль или логин не совпадает'));
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
+// Создаем функцию для аутентификации пользователя
 export const loginUser = createAsyncThunk(
     'auth/login',
     async ({ username, password }, { rejectWithValue }) => {
         try {
             const data = { username, password };
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            };
-
-            const response = await fetch(`${link.AUTH_BASE_URL}signin/`, options);
-            if (response.ok) {
-                return response.json();
-            }
-
-            if (!response.ok) {
-                throw new Error('Пароль или логин не совпадает');
-            }
-
-            return response.json();
+            const response = await instance.post('signin/', data);
+            return response;
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 );
 
+
+//функция для получения данных пользователя
 export const fetchUserData = createAsyncThunk(
     'auth/fetchUserData',
     async (id, { rejectWithValue }) => {
         try {
-            console.log(id);
-            const { data } = await axios.get(`http://68.183.214.2:8666/api/auth/profile/${id}/`);
-            return data;
+            const response = await instance.get(`/profile/${id}/`);
+            console.log('response', response)
+            return response.data;
         } catch (error) {
             console.error('Ошибка при выполнении запроса fetchUserData:', error);
             return rejectWithValue('Ошибка при получении данных пользователя');

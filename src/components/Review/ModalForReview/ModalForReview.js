@@ -25,7 +25,7 @@ const ModalForReview = ({ closeModal, userId }) => {
         }
     };
 
-    const handleAddReview = (e) => {
+    const handleAddReview = async (e) => {
         e.preventDefault()
 
         const token = localStorage.getItem('token');
@@ -47,13 +47,10 @@ const ModalForReview = ({ closeModal, userId }) => {
         };
         console.log("users", user)
 
-        dispatch(addReview(data)).then((resultAction) => {
-            if (addReview.fulfilled.match(resultAction)) {
-                dispatch(getReviews({ id: userId, page: 1 }));
-                setComment(""); // Очищаем поле ввода после успешного добавления
-                dispatch(setShowModal(false))
-            }
-        });
+        await dispatch(addReview(data))
+        await dispatch(getReviews({id}))
+        dispatch(setShowModal(false))
+
     };
 
     return (

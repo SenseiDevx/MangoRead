@@ -1,42 +1,42 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getMangas } from "../../redux/slices/mangaSlice";
-import styles from "./cards.module.css";
-import { Link } from "react-router-dom";
-import {CircularProgress, Skeleton} from "@mui/material";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMangas } from '../../redux/slices/mangaSlice';
+import styles from './cards.module.css';
+import { Link } from 'react-router-dom';
+import { CircularProgress, Skeleton } from '@mui/material';
 
 const Cards = () => {
     const dispatch = useDispatch();
-    const { mangas, itemsPerPage, loading } = useSelector((state) => state.mangoReducer)
+    const { mangas, itemsPerPage, loading } = useSelector((state) => state.mangoReducer);
 
     useEffect(() => {
-        dispatch(getMangas({ offset: 1, limit: itemsPerPage }));
+        // Изменяем запрос на получение манги с параметром сортировки по количеству жанров (genre_count)
+        dispatch(getMangas({ offset: 1, limit: itemsPerPage, sortBy: 'genre_count' }));
     }, [dispatch, itemsPerPage]);
 
     // Функция для обрезания текста и добавления двух точек, если он превышает 20 символов
     const truncateDescription = (text, maxLength) => {
-        return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
 
+    //для пагинации
     if (!Array.isArray(mangas)) {
         return <div>No data available.</div>;
     }
-
     const handlePreviousPage = () => {
-        dispatch(getMangas({ offset: mangas.length - itemsPerPage, limit: itemsPerPage }));
+        dispatch(getMangas({ offset: mangas.length - itemsPerPage, limit: itemsPerPage, sortBy: 'genre_count' }));
     };
-
     const handleNextPage = () => {
-        dispatch(getMangas({ offset: mangas.length + 1, limit: itemsPerPage }));
+        dispatch(getMangas({ offset: mangas.length + 1, limit: itemsPerPage, sortBy: 'genre_count' }));
     };
 
     return (
         <>
             {loading ? (
-                <div style={{marginTop: "120px", display: "flex", flexWrap: "wrap", justifyContent: 'space-between'}}>
+                <div style={{ marginTop: '120px', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {[...Array(12)].map((_, index) => (
-                        <div key={index} style={{margin: "10px"}}>
-                            <Skeleton variant="rectangular" width={190} height={220} sx={{borderRadius: '16px'}}/>
+                        <div key={index} style={{ margin: '10px' }}>
+                            <Skeleton variant="rectangular" width={190} height={220} sx={{ borderRadius: '16px' }} />
                         </div>
                     ))}
                 </div>

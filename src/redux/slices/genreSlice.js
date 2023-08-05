@@ -5,6 +5,7 @@ import {link} from "../link/link";
 const initialState = {
     genres: [],
     loading: true,
+    selectedGenres: []
 }
 
 export const getGenres = createAsyncThunk(
@@ -21,7 +22,11 @@ export const getGenres = createAsyncThunk(
 const genreSlice = createSlice({
     name: "genreSlice",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        updateSelectedGenres: (state, action) => {
+            state.selectedGenres = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getGenres.pending, (state) => {
@@ -39,4 +44,5 @@ const genreSlice = createSlice({
     }
 })
 
+export const { updateSelectedGenres } = genreSlice.actions;
 export default genreSlice.reducer

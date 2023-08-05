@@ -1,24 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {link} from "../link/link";
 
 export const fetchMangaData = createAsyncThunk('manga/fetchMangaData', async (searchText) => {
     try {
-        const response = await axios.get(`http://68.183.214.2:8666/api/v1/manga/?search=${searchText}`);
+        const response = await axios.get(`${link.BASE_URL}manga/?search=${searchText}`);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching data:', error);
     }
 });
 
+const initialState = {
+    searchText: '',
+    filteredData: [],
+    isDropdownVisible: false,
+    status: 'idle',
+    error: null,
+}
+
 const mangaSlice = createSlice({
     name: 'manga',
-    initialState: {
-        searchText: '',
-        filteredData: [],
-        isDropdownVisible: false,
-        status: 'idle',
-        error: null,
-    },
+    initialState: initialState,
     reducers: {
         setSearchText(state, action) {
             state.searchText = action.payload;

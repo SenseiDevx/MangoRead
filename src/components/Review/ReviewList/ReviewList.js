@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getReviews } from "../../../redux/slices/reviewSlice";
+import {getReviews, setShowModal} from "../../../redux/slices/reviewSlice";
 import { useParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import styles from './reviewlist.module.css';
@@ -8,16 +8,16 @@ import ModalForReview from "../ModalForReview/ModalForReview";
 
 const ReviewList = ({ userId }) => {
     const dispatch = useDispatch();
-    const { review } = useSelector((state) => state.reviewReducer);
+    const { review, showModal } = useSelector((state) => state.reviewReducer);
     const { id } = useParams();
-    const [showModal, setShowModal] = useState(false);
+    // const [showModal, setShowModal] = useState(false);
 
     const toggleModal = () => {
-        setShowModal(true);
+        dispatch(setShowModal(true));
     };
 
     const handleCloseModal = () => {
-        setShowModal(false);
+        dispatch(setShowModal(false));
     };
 
     // Функция для обновления списка комментариев после успешного добавления
@@ -27,7 +27,7 @@ const ReviewList = ({ userId }) => {
 
     useEffect(() => {
         dispatch(getReviews({ id }));
-    }, [dispatch]);
+    }, []);
 
     return <>
         <div className={styles.commentHeader}>

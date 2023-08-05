@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from './header.module.css';
 import { ReactComponent as MangoLogo } from "../../assets/header/mangoLogo.svg";
 import InputSearch from "../InputSearch/InputSearch";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import ModalForRegister from "../RegisterAndAuth/ModalForRegister/ModalForRegister";
 import ModalForAuth from "../RegisterAndAuth/ModalForAuth/ModalForAuth";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +10,7 @@ import {fetchUserData, logoutUser} from "../../redux/slices/authSlice";
 import jwtDecode from "jwt-decode";
 
 const Header = ({userId}) => {
+    const location = useLocation()
     const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loginModal, setIsLoginModal] = useState(false);
@@ -27,7 +28,8 @@ const Header = ({userId}) => {
                 dispatch(fetchUserData(userId));
             }
         }
-    }, [dispatch, userId]);
+    }, [location]);
+
     //OmurbekKurmanbekov
     //OmaSensei
     //Omurbek1234567
@@ -53,7 +55,7 @@ const Header = ({userId}) => {
     const closeModalAuth = () => {
         setIsLoginModal(false);
     };
-
+    console.log("image", user.image_file)
     return (
         <div className={styles.allBlock}>
             <div className={styles.headerBlock}>

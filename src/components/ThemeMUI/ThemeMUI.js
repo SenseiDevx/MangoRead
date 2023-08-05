@@ -7,6 +7,9 @@ const theme = createTheme({
         },
         purple: {
             main: '#AD02E0'
+        },
+        gray: {
+            main: '#878787'
         }
     },
 });
