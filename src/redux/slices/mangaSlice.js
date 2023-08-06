@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { link} from "../link/link";
-import {updateSelectedGenres} from "./genreSlice";
+import {updateSelectedGenres, updateSelectedTypes} from "./genreSlice";
 
 const apiClient = axios.create({
     baseURL: link.BASE_URL,
@@ -64,7 +64,7 @@ const initialState = {
     offset: 1,
     manga: null,
     itemsPerPage: 12,
-    mangaList: []
+    mangaList: [],
 };
 
 
@@ -112,10 +112,20 @@ const mangaSlice = createSlice({
                 } else {
                     // Иначе фильтруем манги по выбранным жанрам
                     state.mangas = state.mangaList.filter((manga) => {
-                        return manga.genre.some((genreId) => selectedGenres.includes(genreId));
+                        return manga.genre?.some((genreId) => selectedGenres.includes(genreId));
                     });
                 }
-            });
+            })
+            .addCase(updateSelectedTypes, (state, action) => {
+                const selectedTypes = action.payload;
+                if (selectedTypes.length === 0) {
+                    state.mangas = state.mangaList;
+                } else {
+                    state.mangas = state.mangaList.filter((manga) => {
+                        return manga.type && selectedTypes.includes(manga.type);
+                    });
+                }
+            })
     },
 });
 

@@ -56,11 +56,15 @@ export const getTypes = createAsyncThunk(
     }
 );
 
+
+
+
 const initialState = {
     genres: [],
     loading: true,
     selectedGenres: [],
-    types: []
+    types: [],
+    selectedTypes: []
 }
 
 const genreSlice = createSlice({
@@ -69,6 +73,9 @@ const genreSlice = createSlice({
     reducers: {
         updateSelectedGenres: (state, action) => {
             state.selectedGenres = action.payload;
+        },
+        updateSelectedTypes: (state, action) => {
+            state.selectedTypes = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -100,5 +107,5 @@ const genreSlice = createSlice({
     }
 })
 
-export const { updateSelectedGenres } = genreSlice.actions;
+export const { updateSelectedGenres, updateSelectedTypes } = genreSlice.actions;
 export default genreSlice.reducer
