@@ -74,7 +74,7 @@ const GenreCatalog = () => {
                     <div className={styles.typeBlock}>
                         <h3 className={styles.h3}>Тип</h3>
                         <div className={styles.type}>
-                            {types && types.map((type) => (
+                            {types && types?.map((type) => (
                                 <div className={styles.types} key={type.id}>
                                     <Checkbox
                                         color="green"

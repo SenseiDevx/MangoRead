@@ -30,18 +30,36 @@ apiClient.interceptors.response.use(
     }
 );
 
+
+const initialState = {
+    review: [],
+    loading: true,
+    offset: 1,
+    text: '',
+    showModal: false,
+    page: 1
+}
+
 export const getReviews = createAsyncThunk(
     "getReviews",
-    async (review, {dispatch, rejectWithValue}) => {
+    async (review, { dispatch, rejectWithValue, getState }) => {
         try {
-            const {data} = await apiClient.get(`manga/${review.id}/comments/`)
-            // console.log(data)
-            return data
+            const currentPage = getState().reviewReducer.page;
+            const { data } = await apiClient.get(`manga/${review.id}/comments/`, {
+                params: {
+                    page: currentPage,
+                    // Add any other pagination parameters you may need, e.g., itemsPerPage: 10,
+                },
+            });
+            return data;
         } catch (error) {
-            console.error("Error", error.message)
-            return rejectWithValue(error.message)
+            console.error("Error", error.message);
+            return rejectWithValue(error.message);
         }
-    })
+    }
+);
+
+
 
 
 export const addReview = createAsyncThunk(
@@ -71,13 +89,6 @@ export const addReview = createAsyncThunk(
 );
 
 
-const initialState = {
-    review: [],
-    loading: true,
-    offset: 1,
-    text: '',
-    showModal: false
-}
 
 const reviewSlice = createSlice({
     name: "reviewSlice",
@@ -85,6 +96,12 @@ const reviewSlice = createSlice({
     reducers: {
         setShowModal: (state, action) => {
             state.showModal = action.payload;
+        },
+        setOffset: (state, action) => {
+            state.offset = action.payload;
+        },
+        setPage: (state, action) => {
+            state.page = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -94,7 +111,7 @@ const reviewSlice = createSlice({
             })
             .addCase(getReviews.fulfilled, (state, action) => {
                 state.loading = false
-                state.review = action.payload
+                state.review = action.payload.reverse()
             })
             .addCase(getReviews.rejected, (state, action) => {
                 state.loading = false
@@ -115,125 +132,5 @@ const reviewSlice = createSlice({
             })
     }
 })
-export const {setShowModal} = reviewSlice.actions
+export const {setShowModal, setOffset, setPage} = reviewSlice.actions
 export default reviewSlice.reducer
-
-//import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import axios from "axios";
-// import { link } from "../link/link";
-//
-// const apiClient = axios.create({
-//   baseURL: link.BASE_URL,
-// });
-//
-// // Interceptor для запросов
-// apiClient.interceptors.request.use(
-//   (config) => {
-//     console.log("Request:", config.method, config.url);
-//     return config;
-//   },
-//   (error) => {
-//     console.error("Request Error:", error.message);
-//     return Promise.reject(error);
-//   }
-// );
-//
-// // Interceptor для ответов
-// apiClient.interceptors.response.use(
-//   (response) => {
-//     console.log("Response:", response.status, response.data);
-//     return response;
-//   },
-//   (error) => {
-//     console.error("Response Error:", error.message);
-//     return Promise.reject(error);
-//   }
-// );
-//
-// export const getReviews = createAsyncThunk(
-//   "getReviews",
-//   async ({ id, rejectWithValue }) => {
-//     try {
-//       const { data } = await apiClient.get(`manga/${id}/comments/`);
-//       // console.log(data)
-//       return data;
-//     } catch (error) {
-//       console.error("Error", error.message);
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-//
-// export const addReview = createAsyncThunk(
-//   "addReview",
-//   async function (review, { dispatch, rejectWithValue }) {
-//     try {
-//       const response = await apiClient.post(
-//         `manga/${review.id}/add-comment/`,
-//         review.post,
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${localStorage.getItem("token")}`,
-//           },
-//         }
-//       );
-//
-//       if (response.status === 201) {
-//         await dispatch(getReviews({ id: review.userId, page: 1 }));
-//         return "Успех";
-//       } else {
-//         throw Error(`что-то пошло не так: ${response.status}`);
-//       }
-//     } catch (error) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-//
-// const initialState = {
-//   review: [],
-//   loading: true,
-//   offset: 1,
-//   text: "",
-//   showModal: false,
-// };
-//
-// const reviewSlice = createSlice({
-//   name: "reviewSlice",
-//   initialState: initialState,
-//   reducers: {
-//     setShowModal: (state, action) => {
-//       state.showModal = action.payload;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(getReviews.pending, (state) => {
-//         state.loading = true;
-//       })
-//       .addCase(getReviews.fulfilled, (state, action) => {
-//         state.loading = false;
-//         state.review = action.payload;
-//       })
-//       .addCase(getReviews.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//         console.log("Произошла ошибка", action.error.message);
-//       })
-//       .addCase(addReview.pending, (state) => {
-//         state.loading = true;
-//       })
-//       .addCase(addReview.fulfilled, (state, action) => {
-//         state.review = [...state.review, action.payload];
-//         state.showModal = false;
-//       })
-//       .addCase(addReview.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//         console.log("Произошла ошибка при попытке комента", action.error.message);
-//       });
-//   },
-// });
-// export const { setShowModal } = reviewSlice.actions;
-// export default reviewSlice.reducer;

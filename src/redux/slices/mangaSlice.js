@@ -43,6 +43,28 @@ export const getMangas = createAsyncThunk(
     }
 );
 
+//export const getMangas = createAsyncThunk(
+//     "getMangas",
+//     async ({page}) => {
+//         try {
+//             const {response} = await axios.get(`${link.BASE_URL}manga/`, {
+//                 params: {
+//                     limit: '12',
+//                     offset: page
+//                 }
+//             })
+//             if (response.status === 200) {
+//                 const data = await response.data
+//                 return data
+//             } else {
+//                 throw Error(`Error ${response.status}`)
+//             }
+//         } catch (error) {
+//             console.error("Error", error)
+//         }
+//     }
+// );
+
 
 export const getMangaById = createAsyncThunk(
     "getMangaById",
@@ -80,10 +102,10 @@ const mangaSlice = createSlice({
             if (!fromYear && !toYear) {
                 state.mangas = state.mangaList;
             } else {
-                state.mangas = state.mangaList.filter((mangas) => {
+                state.mangas = state.mangaList.filter((manga) => {
                     return (
-                        (!fromYear || mangas.issue_year >= fromYear) &&
-                        (!toYear || mangas.issue_year <= toYear)
+                        (!fromYear || manga.issue_year >= fromYear) &&
+                        (!toYear || manga.issue_year <= toYear)
                     );
                 });
             }

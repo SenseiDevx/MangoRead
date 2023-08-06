@@ -31,7 +31,6 @@ const ModalForReview = ({ closeModal }) => {
         const token = localStorage.getItem('token');
         console.log('Token', token)
         if (!token) {
-            // Если токен отсутствует, выведем сообщение об ошибке
             console.error('Ошибка: Токен авторизации отсутствует');
             return;
         }
