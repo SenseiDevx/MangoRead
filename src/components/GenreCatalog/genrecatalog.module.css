@@ -45,6 +45,27 @@
 .allBlock .typeBlock {
   padding-left: 10px;
 }
+.allBlock .typeBlock .type {
+  overflow-y: scroll;
+  height: 300px;
+  padding-left: 10px;
+}
+.allBlock .typeBlock .type .types {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.allBlock .typeBlock .type .types .p {
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
 .allBlock .genreBlock {
   padding-left: 10px;
   overflow-y: scroll;
@@ -74,9 +95,54 @@
   font-weight: 400;
   line-height: 35px;
 }
+.allBlock .buttonsType {
+  margin-top: 160px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.allBlock .buttonsType .button {
+  border-radius: 8px;
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.allBlock .inputs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 20px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.allBlock .inputs .input {
+  outline: none;
+  border-radius: 8px;
+  border: 2px solid #2FE09B;
+  width: 168px;
+  height: 55px;
+  color: #A5A5A5;
+  font-family: "Montserrat", sans-serif;
+  padding-left: 15px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 .allBlock .buttons {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

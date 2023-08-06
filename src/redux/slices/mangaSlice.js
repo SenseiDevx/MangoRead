@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { link} from "../link/link";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {link} from "../link/link";
 import {updateSelectedGenres, updateSelectedTypes} from "./genreSlice";
 
 const apiClient = axios.create({
@@ -46,9 +46,9 @@ export const getMangas = createAsyncThunk(
 
 export const getMangaById = createAsyncThunk(
     "getMangaById",
-    async (id, { rejectWithValue }) => {
+    async (id, {rejectWithValue}) => {
         try {
-            const { data } = await axios.get(`${link.BASE_URL}manga/${id}`);
+            const {data} = await axios.get(`${link.BASE_URL}manga/${id}`);
             console.log(data)
             return data;
         } catch (error) {
@@ -74,6 +74,19 @@ const mangaSlice = createSlice({
     reducers: {
         updateMangaList: (state, action) => {
             state.mangaList = action.payload;
+        },
+        filterMangasByYear: (state, action) => {
+            const { fromYear, toYear } = action.payload;
+            if (!fromYear && !toYear) {
+                state.mangas = state.mangaList;
+            } else {
+                state.mangas = state.mangaList.filter((mangas) => {
+                    return (
+                        (!fromYear || mangas.issue_year >= fromYear) &&
+                        (!toYear || mangas.issue_year <= toYear)
+                    );
+                });
+            }
         },
     },
     extraReducers: (builder) => {
@@ -125,8 +138,9 @@ const mangaSlice = createSlice({
                         return manga.type && selectedTypes.includes(manga.type);
                     });
                 }
-            })
+            });
     },
 });
 
 export default mangaSlice.reducer;
+export const {filterMangasByYear} = mangaSlice.actions
