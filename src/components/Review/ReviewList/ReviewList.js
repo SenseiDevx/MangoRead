@@ -62,13 +62,23 @@ const ReviewList = ({ userId }) => {
                     </div>
                 )}
             </div>
-            <div className={styles.pagination}>
+            <div className={styles.pagination}  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "0 auto" }}>
                 <Pagination
+                    sx={{
+                        '& .MuiPaginationItem-root': {
+                            color: '#A5A5A5', // Цвет цифр
+                        },
+                        '& .Mui-selected': {
+                            color: 'white', // Цвет активной страницы
+                        },
+                        marginBottom: '42px'
+                    }}
+                    color="green"
                     count={Math.ceil(review.length / itemsPerPage)}
                     page={currentPage}
-                    color="primary"
                     onChange={handlePageChange}
                 />
+
             </div>
         </>
     );

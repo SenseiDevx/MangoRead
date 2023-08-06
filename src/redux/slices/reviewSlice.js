@@ -48,7 +48,6 @@ export const getReviews = createAsyncThunk(
             const { data } = await apiClient.get(`manga/${review.id}/comments/`, {
                 params: {
                     page: currentPage,
-                    // Add any other pagination parameters you may need, e.g., itemsPerPage: 10,
                 },
             });
             return data;

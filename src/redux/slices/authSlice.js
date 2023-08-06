@@ -78,6 +78,9 @@ const authSlice = createSlice({
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         },
+        setError: (state, action) => {
+            state.error = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -95,8 +98,9 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
-                // localStorage.setItem('token', JSON.stringify(action.payload));
+                state.error = action.error.message
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
                 console.log('Пароль или логин не совпадает');
             })
             .addCase(fetchUserData.pending, (state) => {
@@ -106,7 +110,7 @@ const authSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                // localStorage.setItem('user', JSON.stringify(action.payload));
+                localStorage.setItem('user', JSON.stringify(action.payload));
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
@@ -116,7 +120,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, setError } = authSlice.actions;
 
 export default authSlice.reducer;
-

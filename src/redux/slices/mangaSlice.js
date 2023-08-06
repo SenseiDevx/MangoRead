@@ -31,39 +31,32 @@ apiClient.interceptors.response.use(
     }
 );
 
+const initialState = {
+    mangas: [],
+    loading: false,
+    page: 1,
+    offset: 1,
+    manga: null,
+    itemsPerPage: 12,
+    mangaList: [],
+};
+
 export const getMangas = createAsyncThunk(
     "getMangas",
-    async () => {
+    async (page, { dispatch, rejectWithValue, getState }) => {
         try {
-            const {data} = await axios.get(`${link.BASE_URL}manga/`)
-            return data
+            const { data } = await apiClient.get(`manga/`, {
+                params: {
+                    page: page, // Use the provided page parameter
+                },
+            });
+            return data;
         } catch (error) {
-            console.error("Error", error)
+            console.error("Error", error.message);
+            return rejectWithValue(error.message);
         }
     }
 );
-
-//export const getMangas = createAsyncThunk(
-//     "getMangas",
-//     async ({page}) => {
-//         try {
-//             const {response} = await axios.get(`${link.BASE_URL}manga/`, {
-//                 params: {
-//                     limit: '12',
-//                     offset: page
-//                 }
-//             })
-//             if (response.status === 200) {
-//                 const data = await response.data
-//                 return data
-//             } else {
-//                 throw Error(`Error ${response.status}`)
-//             }
-//         } catch (error) {
-//             console.error("Error", error)
-//         }
-//     }
-// );
 
 
 export const getMangaById = createAsyncThunk(
@@ -80,15 +73,6 @@ export const getMangaById = createAsyncThunk(
     }
 );
 
-const initialState = {
-    mangas: [],
-    loading: false,
-    offset: 1,
-    manga: null,
-    itemsPerPage: 12,
-    mangaList: [],
-};
-
 
 const mangaSlice = createSlice({
     name: "mangaSlice",
@@ -98,7 +82,7 @@ const mangaSlice = createSlice({
             state.mangaList = action.payload;
         },
         filterMangasByYear: (state, action) => {
-            const { fromYear, toYear } = action.payload;
+            const {fromYear, toYear} = action.payload;
             if (!fromYear && !toYear) {
                 state.mangas = state.mangaList;
             } else {

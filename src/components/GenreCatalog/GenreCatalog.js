@@ -5,6 +5,7 @@ import {getGenres, getTypes, updateSelectedGenres, updateSelectedTypes,} from '.
 import {Button, Checkbox} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import {filterMangasByYear, getMangas} from '../../redux/slices/mangaSlice';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const GenreCatalog = () => {
     const dispatch = useDispatch();
@@ -13,12 +14,24 @@ const GenreCatalog = () => {
     const [fromYear, setFromYear] = useState('');
     const [toYear, setToYear] = useState('');
 
-    // const uniqueTypes = new Set(types.map((type) => type.type));
-    // console.log("types", uniqueTypes)
+    const getUniqueTypes = (types) => {
+        const uniqueTypes = [];
+        const typeMap = {};
+
+        types.forEach((type) => {
+            if (!typeMap[type.type]) {
+                typeMap[type.type] = true;
+                uniqueTypes.push(type);
+            }
+        });
+
+        return uniqueTypes;
+    };
 
     const handleBackClick = () => {
-        setShowParentGenreBlock((prevShowParentGenreBlock) => !prevShowParentGenreBlock);
+        setShowParentGenreBlock(!showParentGenreBlock);
     };
+
 
     useEffect(() => {
         dispatch(getGenres());
@@ -66,22 +79,32 @@ const GenreCatalog = () => {
     return (
         <>
             <div className={styles.allBlock}>
-                <div className={styles.back} onClick={handleBackClick}>
-                    <ArrowBackIosIcon color="gray"/>
-                    <p className={styles.p}>Назад</p>
-                </div>
+                {showParentGenreBlock ? (
+                    <div className={styles.genres} onClick={handleBackClick}>
+                        <p className={styles.p}>Жанры</p>
+                        <div className={styles.arrowBlock}>
+                            <p className={styles.p}>все</p>
+                            <ArrowForwardIosIcon color="gray" />
+                        </div>
+                    </div>
+                ) : (
+                    <div className={styles.back} onClick={handleBackClick}>
+                        <ArrowBackIosIcon color="gray" />
+                        <p className={styles.p}>Назад</p>
+                    </div>
+                )}
                 {showParentGenreBlock ? (
                     <div className={styles.typeBlock}>
                         <h3 className={styles.h3}>Тип</h3>
                         <div className={styles.type}>
-                            {types && types?.map((type) => (
+                            {getUniqueTypes(types).map((type) => (
                                 <div className={styles.types} key={type.id}>
                                     <Checkbox
                                         color="green"
-                                        checked={selectedTypes.includes(type?.type)}
-                                        onChange={() => handleTypesChange(type?.type)} // Используем идентификатор типа
+                                        checked={selectedTypes.includes(type.type)}
+                                        onChange={() => handleTypesChange(type.type)}
                                     />
-                                    <p className={styles.p}>{type?.type}</p>
+                                    <p className={styles.p}>{type.type}</p>
                                 </div>
                             ))}
                         </div>
@@ -100,7 +123,6 @@ const GenreCatalog = () => {
                                 value={toYear}
                                 onChange={(e) => setToYear(e.target.value)}
                             />
-                            <button onClick={handleApplyFilterByYear}>применить</button>
                         </div>
                         <div className={styles.buttonsType}>
                             <Button
@@ -116,7 +138,7 @@ const GenreCatalog = () => {
                                 variant="contained"
                                 color="purple"
                                 sx={{padding: '16px 32px', color: '#FFFFFF'}}
-                                onClick={handleApplyFilter} // Добавляем обработчик для кнопки "Применить"
+                                onClick={handleApplyFilterByYear} // Добавляем обработчик для кнопки "Применить"
                             >
                                 Применить
                             </Button>
@@ -152,7 +174,7 @@ const GenreCatalog = () => {
                                 variant="contained"
                                 color="purple"
                                 sx={{padding: '16px 32px', color: '#FFFFFF'}}
-                                onClick={handleApplyFilter} // Добавляем обработчик для кнопки "Применить"
+                                onClick={handleApplyFilter}
                             >
                                 Применить
                             </Button>

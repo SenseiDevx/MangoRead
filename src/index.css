@@ -30,3 +30,8 @@ button {
   border-radius: 10px;
   background: #D5D6D5;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

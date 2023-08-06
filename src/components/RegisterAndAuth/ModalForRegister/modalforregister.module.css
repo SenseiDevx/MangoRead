@@ -108,6 +108,13 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+.modalWindow .modalRating .allBlock .form .inputFile .error {
+  color: red;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
 .modalWindow .modalRating .allBlock .form .inputForm {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -131,6 +138,13 @@
   font-weight: 400;
   line-height: 30px;
   padding: 10px;
+}
+.modalWindow .modalRating .allBlock .form .inputForm .error {
+  color: red;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }
 .modalWindow .modalRating .allBlock .form .inputForm .button {
   border-radius: 8px;

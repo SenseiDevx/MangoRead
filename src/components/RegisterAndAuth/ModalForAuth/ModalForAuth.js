@@ -3,6 +3,7 @@ import styles from './modalforauth.module.css';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../redux/slices/authSlice';
+import ModalForRegister from "../ModalForRegister/ModalForRegister";
 
 const ModalForAuth = ({ closeModalAuth }) => {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const ModalForAuth = ({ closeModalAuth }) => {
     const [username, setUsername] = useState('');
     const { token } = useSelector((state) => state.authReducer);
     const [isModalOpen, setIsModalOpen] = useState(true);
+    const [showRegisterModal, setShowRegisterModal] = useState(false); // New state variable for showing the registration modal
 
     useEffect(() => {
         if (token) {
@@ -40,6 +42,7 @@ const ModalForAuth = ({ closeModalAuth }) => {
                 setUsername('');
                 setPassword('');
                 setIsModalOpen(false);
+                setError('')
             })
             .catch((error) => {
                 setError('Пароль или логин не совпадает');
@@ -49,14 +52,19 @@ const ModalForAuth = ({ closeModalAuth }) => {
 
     return (
         <>
-            {isModalOpen && (
+            {isModalOpen && !showRegisterModal && ( // Render the registration modal when showRegisterModal is true
                 <div className={styles.modalWindow} onClick={handleClose}>
                     <div ref={modalRef} className={styles.modalRating}>
                         <div className={styles.allBlock}>
                             <div className={styles.authTexts}>
                                 <div className={styles.authButtons}>
                                     <button className={styles.button}>Вход</button>
-                                    <button className={styles.button1}>Регистрация</button>
+                                    <button
+                                        className={styles.button1}
+                                        onClick={() => setShowRegisterModal(true)} // Set showRegisterModal to true when the "РЕГИСТРАЦИЯ" button is clicked
+                                    >
+                                        Регистрация
+                                    </button>
                                 </div>
                                 <CloseIcon
                                     onClick={() => {
@@ -84,21 +92,18 @@ const ModalForAuth = ({ closeModalAuth }) => {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                     <br />
-                                    <div className={styles.checkBox}>
-                                        <input type="checkbox" id="checkBox" />
-                                        <label htmlFor="checkBox">Запомнить меня</label>
-                                    </div>
-                                    <br />
                                     <button className={styles.button} type="submit">
                                         ВХОД
                                     </button>
                                 </form>
-                                {error && <div>{error}</div>}
+                                {error && <h1 style={{ color: "red" }} className={styles.error}>{error}</h1>}
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+
+            {showRegisterModal && <ModalForRegister closeModalRegister={() => setShowRegisterModal(false)} />}
         </>
     );
 };
